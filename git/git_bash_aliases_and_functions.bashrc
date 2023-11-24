@@ -78,3 +78,12 @@ gdl() {
   git checkout $MAIN_BRANCH
   git branch -D $OLD_BRANCH
 }
+
+# 'git pull'
+# Fetch remote changes incl. tags and merge them into the current branch.
+alias gp='git fetch -p --tags && git pull'
+# 'git status'
+alias gs='git status'
+# 'last commit'
+# Display contents of last commit
+alias lc='git diff-tree --no-commit-id --name-only -r HEAD'
