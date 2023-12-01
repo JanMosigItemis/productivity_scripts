@@ -64,14 +64,14 @@ grb() {
 }
 export -f grb
 
-# 'git delete' (local and remote branch)
+# 'git delete' current local branch and remote branch with the same name
 gd() {
   CURRENT_BRANCH=$(git symbolic-ref --short HEAD)
   git push origin --delete "${CURRENT_BRANCH}"
   gm
 }
 
-# 'git delete local' Only delete local branch
+# 'git delete local' Only delete current local branch
 gdl() {
   OLD_BRANCH=$(git symbolic-ref --short HEAD)
   MAIN_BRANCH=$(git remote show origin | awk '/HEAD branch:/ {print $NF}')
@@ -80,10 +80,25 @@ gdl() {
 }
 
 # 'git pull'
-# Fetch remote changes incl. tags and merge them into the current branch.
-alias gp='git fetch -p --tags && git pull'
+# Fetch all remote changes for all branches.
+# Merge them into the current branch.
+# Also fetch all remote tags and override local tags of the same name.
+alias gp='git fetch -p --tags --force && git pull --rebase=false'
+
 # 'git status'
 alias gs='git status'
+
 # 'last commit'
-# Display contents of last commit
-alias lc='git diff-tree --no-commit-id --name-only -r HEAD'
+# Display contents of last commit. Also supports merge commits.
+alias lc='git diff-tree --no-commit-id --name-only -r -m -c --cc HEAD'
+
+# 'git log'
+# Pretty print last 3 commits.
+alias gl='git log -3 --pretty=fuller'
+
+# 'git log log'
+# Pretty print last 7 commits. The more commits are displayed, the more likely it gets that results need to be paged with less.
+alias gll='git log -7 --pretty=fuller'
+
+# Unstage last commit.
+alias ulc='git log -1 --pretty=%B && git reset --soft HEAD~1'
