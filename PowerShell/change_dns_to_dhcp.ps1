@@ -19,5 +19,7 @@
 
 # Reset primary and secondary DNS server addresses (both IPv4 and IPv6) for specified network interfaces to "default" which often means: Use DHCP.
 # Be aware: Your network interfaces may have different names. Please adapt.
+# Tested with Windows 10
+
 Set-DnsClientServerAddress -InterfaceAlias "WLAN" -ResetServerAddresses
 Set-DnsClientServerAddress -InterfaceAlias "Ethernet 2" -ResetServerAddresses

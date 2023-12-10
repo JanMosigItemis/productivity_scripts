@@ -1,4 +1,4 @@
-REM reset_network.bat
+REM bitlocker_lock_drive.bat
 REM Copyright (C) 2023  Jan Mosig
 
 REM This program is free software: you can redistribute it and/or modify
@@ -15,15 +15,20 @@ REM You should have received a copy of the GNU General Public License
 REM along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 REM https://github.com/JanMosigItemis/productivity_scripts
-
 @ECHO OFF
+SETLOCAL
 
-REM A script that tries to reset essential Windows network things.
-REM Renews DHCP leases and flushes the DNS cache.
-REM Tested with Windows 10
+REM Lock a decrypted drive with Bitlocker.
+REM Usage: bitlocker_lock_drive.bat "<drive_letter>:"
+REM Example: bitlocker_lock_drive.bat "d:"
 
-netsh winsock reset
-netsh int ip reset
-ipconfig/release
-ipconfig/renew
-ipconfig/flushdns
+REM The ~ removes any surrounding quotes.
+if "%~1"=="" (
+  echo Missing drive letter argument
+  goto :end
+)
+
+set drive_letter=%1
+set drive_letter=%drive_letter:"=%
+manage-bde -lock "%drive_letter%" -ForceDismount
+:end
