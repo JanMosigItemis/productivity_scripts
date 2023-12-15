@@ -23,7 +23,7 @@
 
 # Use with echo -e and don't forget to reset the colors, e. g.
 # echo -e "${GREEN}This message is printed in green color.${NC}"
-if [[ -z "${WORKDIR}" ]] ; then declare -r WORKDIR_DIR="/path/to/my/workdir" ; fi
+if [[ -z "${WORKDIR}" ]] ; then declare -r WORKDIR="${PWD}" ; fi
 if [[ -z "${RED}" ]] ; then declare -r RED='\033[0;31m' ; fi
 if [[ -z "${GREEN}" ]] ; then declare -r GREEN='\033[0;32m' ; fi
 if [[ -z "${YELLOW}" ]] ; then declare -r YELLOW='\033[0;33m' ; fi
@@ -85,12 +85,17 @@ press_any_key() {
   echo
 }
 
-# Change to the directory referenced by WORKDIR
-cd_workdir() {
-  cd "${WORKDIR}"
+# Return the name of the default branch. Current working dir must be a git repository.
+main_branch() {
+  echo $(git remote show origin | awk '/HEAD branch:/ {print $NF}')
 }
 
-# Return the name of a git repository's default branch
-retrieve_default_branch() {
-  echo $(git remote show origin | awk '/HEAD branch:/ {print $NF}')
+# Return the name of the currently checked out branch. Current working dir must be a git repository.
+current_branch() {
+  echo $(git symbolic-ref --short HEAD)
+}
+
+# Change back to the directory that was the current working directory when lib.sh has first been called.
+cd_cwd() {
+  cd "${WORKDIR}"
 }

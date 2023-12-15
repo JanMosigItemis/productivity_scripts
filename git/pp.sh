@@ -1,5 +1,5 @@
 #!/bin/bash
-
+#
 # pp.sh
 # Copyright (C) 2023  Jan Mosig
 #
@@ -32,23 +32,11 @@
 # * Other branch checked out and no uncommitted changes -> print repo name in yellow
 # * Other branch checked out and has uncommitted changes -> print repo name in red
 #
-# Requires https://github.com/JanMosigItemis/productivity_scripts/blob/main/bash/lib.sh
+# Requires https://github.com/JanMosigItemis/productivity_scripts/blob/main/bash/lib.sh in the same directory.
 
 . lib.sh
 set -e
-
-main_branch() {
-  echo $(git remote show origin | awk '/HEAD branch:/ {print $NF}')
-}
-
-current_branch() {
-  echo $(git symbolic-ref --short HEAD)
-}
-
-cd_cwd() {
-  cd "${cwd}"
-}
-
+echo $WORKDIR
 update() {
   echo -ne "\e]0;Now updating $1\a"
   echo
@@ -97,7 +85,6 @@ collect_projects() {
   done
 }
 
-declare -g cwd="${PWD}"
 declare -ga projects=()
 collect_projects;
 
