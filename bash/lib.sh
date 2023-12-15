@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # lib.sh
 # Copyright (C) 2023  Jan Mosig
 #
