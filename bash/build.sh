@@ -25,6 +25,7 @@
 # You may provide a sub dir name to skip, i. e. of sub projects a, b and c if called like './build.sh c' it will start
 # with c and skip everything that comes before c.
 #
+# See https://github.com/JanMosigItemis/productivity_scripts
 # Requires https://github.com/JanMosigItemis/productivity_scripts/blob/main/bash/lib.sh in the same directory.
 
 . lib.sh
