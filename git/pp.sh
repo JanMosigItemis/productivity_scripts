@@ -17,6 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 # pp - "pull pull" - A script that automatically updates all git repositories in its current working directory.
+# Order of traversal is alphanumeric (e. g. the same order as 'ls' would provide).
 # Call with ./pp
 # 1. Enters next subdir if it contains a .git directory.
 # 2. Stashes away uncommitted changes on currently checked out feature branch.
@@ -32,11 +33,14 @@
 # * Other branch checked out and no uncommitted changes -> print repo name in yellow
 # * Other branch checked out and has uncommitted changes -> print repo name in red
 #
+# If called with ./pp <dir_name> the script will skip all directories BEFORE the provided name,
+# i. e. this is a way to continue the script where it left of if it failed updating due to some git problem.
+#
 # Requires https://github.com/JanMosigItemis/productivity_scripts/blob/main/bash/lib.sh in the same directory.
 
 . lib.sh
 set -e
-echo $WORKDIR
+echo "Working in $WORKDIR"
 update() {
   echo -ne "\e]0;Now updating $1\a"
   echo
@@ -95,8 +99,19 @@ if [ "$1" = "branches" ]; then
     branches "${i}" || exit 1
   done
 else
+  skip=false
+  if [ ! -z "$1" ]; then skip=true ; fi ;
+  found_start=false
   for current_project in "${projects[@]}"
   do
+    if [[ $skip == "true" ]]; then
+      if [[ "${current_project}" == "$1" ]]; then
+        skip=false
+      else
+        echo "Skipping ${current_project}"
+        continue
+      fi
+    fi
     { update "${current_project}" ; } || { end_with_error "Git updated failed." ; }
   done
   echo -e "${GREEN}<-- SUCCESS${NC}"
