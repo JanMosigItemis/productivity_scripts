@@ -82,7 +82,10 @@ export -f grb
 gd() {(
   set -e
   CURRENT_BRANCH=$(current_branch)
+  # Do not fail if the branch happens to already be gone.
+  set +e
   git push origin --delete "${CURRENT_BRANCH}"
+  set -e
   gm
 )}
 
