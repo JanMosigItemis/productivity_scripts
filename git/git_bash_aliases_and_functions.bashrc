@@ -36,7 +36,7 @@ current_branch() {
 # THIS IS A DANGEROUS OPERATION! It does not store incremental changes on purpose, i. e. you can't revert change 7 of 10. Use with care!
 fp() {(
   set -e
-  git add -u
+  git add -A
   git commit --amend --no-edit
   read -p "Really force push? " -n 1 -r
   echo
