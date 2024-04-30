@@ -22,4 +22,6 @@ REM A script that helps reloading gpg smart card services.
 REM Helps with (re)recognizing a 'stuck' smartcard in case 'gpg --card-status' returns "No such device" or "IPC error" when smartcards have been switched.
 REM See https://www.gpg4win.de for details on involved services and commands.
 
-taskkill /IM "scdaemon.exe" /F & taskkill /IM "gpg-agent.exe" /F & timeout 5 & gpgconf --reload gpg-agent & timeout 2 & gpg --card-status && timeout 2
+@ECHO OFF
+
+gpgconf --kill gpg-agent & timeout 1 & gpgconf --kill scdaemon & timeout 1 & taskkill /IM "scdaemon.exe" /F & taskkill /IM "gpg-agent.exe" /F & timeout 5 & gpgconf --reload gpg-agent & timeout 1 & gpgconf --reload scdaemon & timeout 1 & gpg --card-status && timeout 2
