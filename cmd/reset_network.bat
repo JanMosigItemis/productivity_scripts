@@ -1,3 +1,4 @@
+@ECHO OFF
 REM reset_network.bat
 REM Copyright (C) 2023  Jan Mosig
 
@@ -16,14 +17,12 @@ REM along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 REM https://github.com/JanMosigItemis/productivity_scripts
 
-@ECHO OFF
-
 REM A script that tries to reset essential Windows network things.
 REM Renews DHCP leases and flushes the DNS cache.
 REM Tested with Windows 10
 
 netsh winsock reset
 netsh int ip reset
-ipconfig/release
-ipconfig/renew
-ipconfig/flushdns
+ipconfig /release
+ipconfig /renew
+ipconfig /flushdns
